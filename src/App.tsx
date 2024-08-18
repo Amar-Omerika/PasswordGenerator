@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./App.sass";
+import { FaCopy } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [length, setLength] = useState<number>(10);
@@ -7,7 +10,6 @@ function App() {
   const [includeUppercase, setIncludeUppercase] = useState<boolean>(false);
   const [includeNumbers, setIncludeNumbers] = useState<boolean>(false);
   const [includeSymbols, setIncludeSymbols] = useState<boolean>(false);
-
   const [password, setPassword] = useState<string>("");
 
   const handleGeneratePassword = () => {
@@ -35,27 +37,46 @@ function App() {
     setFunction: React.Dispatch<React.SetStateAction<boolean>>,
     currentValue: boolean
   ) => {
-    // Count how many options are currently selected
     const selectedOptions =
       (includeLowercase ? 1 : 0) +
       (includeUppercase ? 1 : 0) +
       (includeNumbers ? 1 : 0) +
       (includeSymbols ? 1 : 0);
 
-    // Prevent deselecting if it's the last selected option
     if (selectedOptions > 1 || !currentValue) {
       setFunction(!currentValue);
     }
   };
 
+  const handleCopyToClipboard = () => {
+    if (password) {
+      navigator.clipboard
+        .writeText(password)
+        .then(() => {
+          toast.success("Password copied to clipboard!");
+        })
+        .catch(() => {
+          toast.error("Failed to copy password.");
+        });
+    }
+  };
+
   return (
     <div className="password-generator">
-      <input
-        type="text"
-        value={password}
-        readOnly
-        className="password-generator__input"
-      />
+      <ToastContainer />
+      <div className="password-generator__input-wrapper">
+        <input
+          type="text"
+          value={password}
+          readOnly
+          className="password-generator__input"
+        />
+        <FaCopy
+          onClick={handleCopyToClipboard}
+          className="password-generator__copy-icon"
+          title="Copy to clipboard"
+        />
+      </div>
       <div className="password-generator__controls">
         <label>Character length {length}</label>
         <input

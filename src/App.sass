@@ -7,12 +7,28 @@
   margin: 0 auto
   flex-direction: column
 
+  &__input-wrapper
+    position: relative
+    display: flex
+    align-items: center
+
   &__input
-    padding: 10px
+    width: 100%
+    padding: 10px 40px 10px 10px // Extra padding on the right to make space for the icon
     font-size: 20px
     margin-bottom: 10px
     border: 1px solid #ccc
     border-radius: 10px
+
+  &__copy-icon
+    position: absolute
+    right: 10px
+    top: 50%
+    transform: translateY(-50%)
+    cursor: pointer
+    font-size: 20px
+    color: gray // Set the icon color to gray
+
 
   &__controls
     display: flex
@@ -23,9 +39,11 @@
     margin-bottom: 10px
     display: flex
     flex-direction: column
-
+    padding: 10px 0
+ 
     &__input
         margin-bottom: 10px
+        cursor: pointer
         
 
   &__button
