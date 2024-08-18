@@ -1,35 +1,126 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import "./App.sass";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [length, setLength] = useState<number>(10);
+  const [includeLowercase, setIncludeLowercase] = useState<boolean>(true);
+  const [includeUppercase, setIncludeUppercase] = useState<boolean>(false);
+  const [includeNumbers, setIncludeNumbers] = useState<boolean>(false);
+  const [includeSymbols, setIncludeSymbols] = useState<boolean>(false);
+
+  const [password, setPassword] = useState<string>("");
+
+  const handleGeneratePassword = () => {
+    const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+    const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numberChars = "0123456789";
+    const symbolChars = "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+
+    let characterPool = "";
+    if (includeLowercase) characterPool += lowercaseChars;
+    if (includeUppercase) characterPool += uppercaseChars;
+    if (includeNumbers) characterPool += numberChars;
+    if (includeSymbols) characterPool += symbolChars;
+
+    let generatedPassword = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characterPool.length);
+      generatedPassword += characterPool[randomIndex];
+    }
+
+    setPassword(generatedPassword);
+  };
+
+  const handleCheckboxChange = (
+    setFunction: React.Dispatch<React.SetStateAction<boolean>>,
+    currentValue: boolean
+  ) => {
+    // Count how many options are currently selected
+    const selectedOptions =
+      (includeLowercase ? 1 : 0) +
+      (includeUppercase ? 1 : 0) +
+      (includeNumbers ? 1 : 0) +
+      (includeSymbols ? 1 : 0);
+
+    // Prevent deselecting if it's the last selected option
+    if (selectedOptions > 1 || !currentValue) {
+      setFunction(!currentValue);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="password-generator">
+      <input
+        type="text"
+        value={password}
+        readOnly
+        className="password-generator__input"
+      />
+      <div className="password-generator__controls">
+        <label>Character length {length}</label>
+        <input
+          type="range"
+          min="1"
+          max="20"
+          value={length}
+          onChange={(e) => setLength(Number(e.target.value))}
+          className="password-generator__slider"
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="password-generator__checkbox-group">
+        <label>
+          <input
+            type="checkbox"
+            checked={includeLowercase}
+            onChange={() =>
+              handleCheckboxChange(setIncludeLowercase, includeLowercase)
+            }
+            className="password-generator__checkbox-group__input"
+          />
+          Include Lowercase
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={includeUppercase}
+            onChange={() =>
+              handleCheckboxChange(setIncludeUppercase, includeUppercase)
+            }
+            className="password-generator__checkbox-group__input"
+          />
+          Include Uppercase
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={includeNumbers}
+            onChange={() =>
+              handleCheckboxChange(setIncludeNumbers, includeNumbers)
+            }
+            className="password-generator__checkbox-group__input"
+          />
+          Include Numbers
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={includeSymbols}
+            onChange={() =>
+              handleCheckboxChange(setIncludeSymbols, includeSymbols)
+            }
+            className="password-generator__checkbox-group__input"
+          />
+          Include Symbols
+        </label>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <button
+        onClick={handleGeneratePassword}
+        className="password-generator__button"
+      >
+        Generate
+      </button>
+    </div>
+  );
 }
 
-export default App
+export default App;
