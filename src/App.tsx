@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import "./App.sass";
+import "./styles/global.sass";
 import { FaCopy } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Checkbox from "./components/ui/Checkbox.tsx";
 
 function App() {
   const [length, setLength] = useState<number>(10);
@@ -89,50 +90,34 @@ function App() {
         />
       </div>
       <div className="password-generator__checkbox-group">
-        <label>
-          <input
-            type="checkbox"
-            checked={includeLowercase}
-            onChange={() =>
-              handleCheckboxChange(setIncludeLowercase, includeLowercase)
-            }
-            className="password-generator__checkbox-group__input"
-          />
-          Include Lowercase
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={includeUppercase}
-            onChange={() =>
-              handleCheckboxChange(setIncludeUppercase, includeUppercase)
-            }
-            className="password-generator__checkbox-group__input"
-          />
-          Include Uppercase
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={includeNumbers}
-            onChange={() =>
-              handleCheckboxChange(setIncludeNumbers, includeNumbers)
-            }
-            className="password-generator__checkbox-group__input"
-          />
-          Include Numbers
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={includeSymbols}
-            onChange={() =>
-              handleCheckboxChange(setIncludeSymbols, includeSymbols)
-            }
-            className="password-generator__checkbox-group__input"
-          />
-          Include Symbols
-        </label>
+        <Checkbox
+          label="Include Lowercase"
+          checked={includeLowercase}
+          onChange={() =>
+            handleCheckboxChange(setIncludeLowercase, includeLowercase)
+          }
+        />
+        <Checkbox
+          label="Include Uppercase"
+          checked={includeUppercase}
+          onChange={() =>
+            handleCheckboxChange(setIncludeUppercase, includeUppercase)
+          }
+        />
+        <Checkbox
+          label="Include Numbers"
+          checked={includeNumbers}
+          onChange={() =>
+            handleCheckboxChange(setIncludeNumbers, includeNumbers)
+          }
+        />
+        <Checkbox
+          label="Include Symbols"
+          checked={includeSymbols}
+          onChange={() =>
+            handleCheckboxChange(setIncludeSymbols, includeSymbols)
+          }
+        />
       </div>
       <button
         onClick={handleGeneratePassword}
